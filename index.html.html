@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyVision Pro - النسخة الاحترافية</title>
+    <style>
+        :root {
+            /* الثيمات */
+            --primary: #2B2D42;
+            --secondary: #EF233C;
+            --accent: #83C5BE;
+            --text: #EDF2F4;
+            --bg: #1A1B23;
+            --surface: rgba(255, 255, 255, 0.05);
+        }
+
+        .theme-light {
+            --primary: #F8F9FA;
+            --secondary: #E63946;
+            --accent: #2A9D8F;
+            --text: #212529;
+            --bg: #E9ECEF;
+            --surface: rgba(0, 0, 0, 0.05);
+        }
+
+        .theme-blue {
+            --primary: #03045E;
+            --secondary: #00B4D8;
+            --accent: #90E0EF;
+            --text: #CAF0F8;
+            --bg: #0077B6;
+            --surface: rgba(202, 240, 248, 0.1);
+        }
+
+        .theme-green {
+            --primary: #1B4332;
+            --secondary: #52B788;
+            --accent: #95D5B2;
+            --text: #D8F3DC;
+            --bg: #2D6A4F;
+            --surface: rgba(216, 243, 220, 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Tajawal', sans-serif;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            gap: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        }
+
+        /* بطاقة الدراسة المتقدمة */
+        .study-card {
+            background: var(--surface);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .pomodoro-timer {
+            font-size: 4.5rem;
+            text-align: center;
+            margin: 2rem 0;
+            font-weight: 700;
+            background: linear-gradient(45deg, var(--secondary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .timer-controls {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+
+        .timer-btn {
+            padding: 1rem;
+            border: none;
+            border-radius: 15px;
+            background: var(--surface);
+            color: var(--text);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .timer-btn:hover {
+            background: var(--secondary);
+            transform: translateY(-3px);
+        }
+
+        /* مقياس التقدم */
+        .progress-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .progress-card {
+            background: var(--surface);
+            padding: 1.5rem;
+            border-radius: 15px;
+            text-align: center;
+            position: relative;
+        }
+
+        .progress-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin: 1rem 0;
+        }
+
+        .progress-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--secondary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            margin: 0 auto;
+            transition: 0.3s;
+        }
+
+        .progress-btn:hover {
+            transform: scale(1.1);
+        }
+
+        /* منظم المهام */
+        .task-input {
+            width: 100%;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border: none;
+            border-radius: 12px;
+            background: var(--surface);
+            color: var(--text);
+            font-size: 1.1rem;
+        }
+
+        .task-list {
+            margin-top: 1rem;
+        }
+
+        .task-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            margin: 1rem 0;
+            background: var(--surface);
+            border-radius: 12px;
+            animation: slideIn 0.3s ease;
+        }
+
+        .delete-btn {
+            color: var(--secondary);
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+
+        .delete-btn:hover {
+            background: rgba(239, 35, 60, 0.1);
+        }
+
+        /* الرسائل التحفيزية */
+        .wisdom-panel {
+            position: fixed;
+            bottom: 2rem;
+            left: 2rem;
+            background: var(--surface);
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            backdrop-filter: blur(10px);
+            animation: float 3s infinite;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(30px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0); }
+        }
+
+        /* تبديل الثيمات */
+        .theme-switcher {
+            position: fixed;
+            top: 2rem;
+            left: 2rem;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .theme-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid var(--text);
+            transition: 0.3s;
+        }
+
+        .theme-btn:hover {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body class="theme-dark">
+    <div class="theme-switcher">
+        <div class="theme-btn" style="background: #2B2D42;" onclick="changeTheme('default')"></div>
+        <div class="theme-btn" style="background: #F8F9FA;" onclick="changeTheme('light')"></div>
+        <div class="theme-btn" style="background: #03045E;" onclick="changeTheme('blue')"></div>
+        <div class="theme-btn" style="background: #1B4332;" onclick="changeTheme('green')"></div>
+    </div>
+
+    <div class="container">
+        <!-- الدراسة المتقدمة -->
+        <div class="study-card">
+            <h2>⏳ الدراسة المتقدمة</h2>
+            <div class="pomodoro-timer" id="timer">25:00</div>
+            <div class="timer-controls">
+                <button class="timer-btn" onclick="startTimer()">▶ ابدأ</button>
+                <button class="timer-btn" onclick="pauseTimer()">⏸ إيقاف</button>
+                <button class="timer-btn" onclick="resetTimer()">🔄 إعادة</button>
+            </div>
+        </div>
+
+        <!-- مقياس التقدم -->
+        <div class="study-card">
+            <h2>📊 مقياس التقدم</h2>
+            <div class="progress-grid">
+                <div class="progress-card">
+                    <div class="progress-value" id="check-count">0</div>
+                    ✅ إنجازات
+                    <div class="progress-btn" onclick="updateCounter('check')">+</div>
+                </div>
+                <div class="progress-card">
+                    <div class="progress-value" id="neutral-count">0</div>
+                    🤷♂️ محايد
+                    <div class="progress-btn" onclick="updateCounter('neutral')">+</div>
+                </div>
+                <div class="progress-card">
+                    <div class="progress-value" id="sos-count">0</div>
+                    🆘 طوارئ
+                    <div class="progress-btn" onclick="updateCounter('sos')">+</div>
+                </div>
+            </div>
+            <button class="timer-btn" onclick="resetCounters()" style="width: 100%; margin-top: 1rem;">
+                🔄 إعادة التعيين
+            </button>
+        </div>
+
+        <!-- منظم المهام -->
+        <div class="study-card">
+            <h2>📋 منظم المهام</h2>
+            <input type="text" class="task-input" placeholder="أضف مهمة جديدة..." 
+                   id="taskInput" onkeypress="addTask(event)">
+            <div class="task-list" id="taskList"></div>
+        </div>
+    </div>
+
+    <div class="wisdom-panel" id="wisdomText">"التعلم كنز يتبع صاحبه أينما ذهب"</div>
+
+    <script>
+        // المؤقت
+        let time = 1500;
+        let timerId;
+        let isRunning = false;
+
+        function startTimer() {
+            if (!isRunning) {
+                isRunning = true;
+                timerId = setInterval(() => {
+                    time--;
+                    updateTimer();
+                    if (time <= 0) {
+                        clearInterval(timerId);
+                        showWisdom('تهانينا!', 'لقد أكملت جلسة الدراسة بنجاح 🎉');
+                    }
+                }, 1000);
+            }
+        }
+
+        function pauseTimer() {
+            clearInterval(timerId);
+            isRunning = false;
+        }
+
+        function resetTimer() {
+            clearInterval(timerId);
+            time = 1500;
+            isRunning = false;
+            updateTimer();
+        }
+
+        function updateTimer() {
+            const minutes = Math.floor(time / 60).toString().padStart(2, '0');
+            const seconds = (time % 60).toString().padStart(2, '0');
+            document.getElementById('timer').textContent = `${minutes}:${seconds}`;
+        }
+
+        // العدادات
+        let counters = { check: 0, neutral: 0, sos: 0 };
+
+        function updateCounter(type) {
+            counters[type]++;
+            document.getElementById(`${type}-count`).textContent = counters[type];
+            showWisdom('إنجاز!', getMotivationMessage(type));
+        }
+
+        function resetCounters() {
+            counters = { check: 0, neutral: 0, sos: 0 };
+            Object.keys(counters).forEach(type => {
+                document.getElementById(`${type}-count`).textContent = '0';
+            });
+        }
+
+        // المهام
+        function addTask(e) {
+            if (e.key === 'Enter' && e.target.value.trim()) {
+                const taskList = document.getElementById('taskList');
+                const task = document.createElement('div');
+                task.className = 'task-item';
+                task.innerHTML = `
+                    <span>${e.target.value}</span>
+                    <span class="delete-btn" onclick="this.parentElement.remove()">✖</span>
+                `;
+                taskList.prepend(task);
+                e.target.value = '';
+            }
+        }
+
+        // الحكم اليومية
+        const wisdomMessages = [
+            "النجاح رحلة لا تتوقف عند محطة 🚂",
+            "كل يوم فرصة جديدة للتعلم 🌱",
+            "التميز عادة وليس حدثًا 🏆",
+            "العلم يرفع بيتًا لا عماد له 🏛️",
+            "من طلب العلا سهر الليالي 🌟"
+        ];
+
+        function showWisdom(title, message) {
+            const panel = document.getElementById('wisdomText');
+            panel.innerHTML = `<strong>${title}</strong><br>${message}`;
+            panel.style.animation = 'none';
+            void panel.offsetWidth;
+            panel.style.animation = 'float 3s infinite';
+        }
+
+        // تبديل الثيمات
+        function changeTheme(theme) {
+            document.body.className = theme === 'default' ? '' : `theme-${theme}`;
+            localStorage.setItem('theme', theme);
+        }
+
+        // التحميل الأولي
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme') || 'default';
+            changeTheme(savedTheme);
+            setInterval(() => {
+                const randomMsg = wisdomMessages[Math.floor(Math.random() * wisdomMessages.length)];
+                showWisdom('حكمة اليوم', randomMsg);
+            }, 10000);
+        });
+    </script>
+</body>
+</html>
